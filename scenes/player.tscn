@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://be8qbmt0fe144"]
+
+[ext_resource type="Script" uid="uid://cysgnykgobs2b" path="res://scripts/player.gd" id="1_3vyb7"]
+[ext_resource type="Texture2D" uid="uid://bdq6r4ccmdafn" path="res://textures/hands.png" id="2_g2els"]
+[ext_resource type="Script" uid="uid://dyayhlxhsvtpu" path="res://scripts/camera_3d.gd" id="2_qhqgy"]
+[ext_resource type="Script" uid="uid://qeo6gl2vxuqm" path="res://scripts/sprite_overlay.gd" id="3_qlg0r"]
+[ext_resource type="Script" uid="uid://gx8v5gcrpfxi" path="res://scripts/animation_controller.gd" id="4_dqkch"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
+atlas = ExtResource("2_g2els")
+region = Rect2(0, 0, 2048, 2048)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
+atlas = ExtResource("2_g2els")
+region = Rect2(2048, 0, 2048, 2048)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w8frs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhqgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqkch")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Player" type="Node3D" unique_id=1133914630]
+script = ExtResource("1_3vyb7")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1526682563]
+current = true
+fov = 70.0
+script = ExtResource("2_qhqgy")
+
+[node name="SpriteOverlay" type="CanvasLayer" parent="Camera3D" unique_id=1228645838]
+script = ExtResource("3_qlg0r")
+
+[node name="HandsAnchor" type="Control" parent="Camera3D/SpriteOverlay" unique_id=393110733]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Hands" type="AnimatedSprite2D" parent="Camera3D/SpriteOverlay/HandsAnchor" unique_id=278868692]
+position = Vector2(104, -401)
+scale = Vector2(0.43115234, 0.43115234)
+sprite_frames = SubResource("SpriteFrames_w8frs")
+speed_scale = 0.2
+
+[node name="HeadAnchor" type="Control" parent="Camera3D/SpriteOverlay" unique_id=399757698]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="Head" type="AnimatedSprite2D" parent="Camera3D/SpriteOverlay/HeadAnchor" unique_id=1633356000]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=2121021271]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
+light_energy = 10.0
+spot_attenuation = 3.0
+
+[node name="AnimationController" type="Node" parent="." unique_id=1250162733 node_paths=PackedStringArray("player", "camera", "overlay")]
+script = ExtResource("4_dqkch")
+player = NodePath("..")
+camera = NodePath("../Camera3D")
+overlay = NodePath("../Camera3D/SpriteOverlay")

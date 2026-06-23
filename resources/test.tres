@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="TileDefinition" format=3 uid="uid://b8puh432jeh1y"]
+
+[ext_resource type="Texture2D" uid="uid://ce8qofowkggwy" path="res://textures/ceiling.png" id="1_6iwn6"]
+[ext_resource type="Script" uid="uid://btkoe3ohp8gf1" path="res://scripts/tile_definition.gd" id="1_ytc5p"]
+[ext_resource type="Texture2D" uid="uid://b2x6b438xvtn5" path="res://textures/floor.png" id="2_ue1of"]
+[ext_resource type="Texture2D" uid="uid://brb7ky455mcxa" path="res://textures/wall.png" id="4_up83p"]
+
+[resource]
+script = ExtResource("1_ytc5p")
+id = 1
+floor_texture = ExtResource("2_ue1of")
+ceiling_texture = ExtResource("1_6iwn6")
+wall_texture = ExtResource("4_up83p")
+metadata/_custom_type_script = "uid://btkoe3ohp8gf1"

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://yicge48108e0"]
+
+[ext_resource type="Script" uid="uid://dy074nunrs5v3" path="res://scripts/level.gd" id="1_mx8sn"]
+[ext_resource type="Script" uid="uid://btkoe3ohp8gf1" path="res://scripts/tile_definition.gd" id="2_ppgk2"]
+[ext_resource type="Resource" uid="uid://b8puh432jeh1y" path="res://resources/test.tres" id="3_2r41h"]
+
+[sub_resource type="Environment" id="Environment_g4v7s"]
+ambient_light_source = 2
+ambient_light_color = Color(0.057996348, 0.057996348, 0.05799634, 1)
+
+[node name="Level" type="Node3D" unique_id=458803066]
+script = ExtResource("1_mx8sn")
+tile_definitions = Array[ExtResource("2_ppgk2")]([ExtResource("3_2r41h")])
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1888155958]
+environment = SubResource("Environment_g4v7s")
