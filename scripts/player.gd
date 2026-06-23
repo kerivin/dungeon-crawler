@@ -1,8 +1,5 @@
 extends Node3D
 
-signal movement_finished(new_grid: Vector2i)
-signal turn_finished(new_rotation: float)
-
 var grid_position: Vector2i = Vector2i.ZERO
 var cell_size: float = 2.0
 var map_node: Node            # reference to the game node that has is_walkable()
@@ -19,7 +16,7 @@ const DIR_VECTORS = [
 var is_animating: bool = false
 
 @export var eye_height: float = 1.2
-@export var move_duration: float = 0.2
+@export var move_duration: float = 0.4
 @export var turn_duration: float = 0.2
 
 @onready var anim: Node = $AnimationController
