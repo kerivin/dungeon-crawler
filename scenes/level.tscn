@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://bfhj4umrvgnii" path="res://resources/bg_tile_test.tres" id="5_2r41h"]
 
 [sub_resource type="Environment" id="Environment_g4v7s"]
+background_mode = 1
 ambient_light_source = 2
 ambient_light_color = Color(0.005198906, 0.0051989057, 0.005198909, 1)
 
