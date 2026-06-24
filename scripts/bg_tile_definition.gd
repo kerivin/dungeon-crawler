@@ -35,10 +35,6 @@ func _place_billboard(parent: Node3D, x: int, y: int, cell_size: float, wall_hei
 	mesh_z.size = Vector2(cell_size, wall_height)       # X and Y
 	mesh_z.orientation = PlaneMesh.FACE_Z                # normal +Z
 
-	# We'll store both meshes in the MultiMesh by using a different instance index.
-	# MultiMesh.mesh can be a single mesh, so we need to pre‑bake the rotation
-	# into the transform. We'll use the FACE_Z mesh for all and rotate the X‑facing ones.
-	# (Simpler: just use FACE_Z for the base mesh and apply a Y rotation of 90° for X‑facing planes)
 	var base_mesh = PlaneMesh.new()
 	base_mesh.size = Vector2(cell_size, wall_height)
 	base_mesh.orientation = PlaneMesh.FACE_Z
@@ -70,7 +66,6 @@ func _place_billboard(parent: Node3D, x: int, y: int, cell_size: float, wall_hei
 	multimesh.buffer = transforms
 	mm_instance.multimesh = multimesh
 
-	# Material – double‑sided, alpha support
 	var mat = StandardMaterial3D.new()
 	mat.albedo_texture = texture
 	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
