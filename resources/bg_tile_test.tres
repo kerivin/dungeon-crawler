@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BgTileDefinition" format=3 uid="uid://bfhj4umrvgnii"]
+
+[ext_resource type="Texture2D" uid="uid://b2x6b438xvtn5" path="res://textures/floor.png" id="1_d3u1e"]
+[ext_resource type="Script" uid="uid://cmsd7aamchffq" path="res://scripts/bg_tile_definition.gd" id="1_fr6y6"]
+[ext_resource type="Texture2D" uid="uid://df2lvmm3rwlbf" path="res://textures/corn.png" id="2_8ovnp"]
+
+[resource]
+script = ExtResource("1_fr6y6")
+id = -2
+floor_texture = ExtResource("1_d3u1e")
+texture = ExtResource("2_8ovnp")
+horizontal_repeat = 2
+vertical_repeat = 2
+metadata/_custom_type_script = "uid://cmsd7aamchffq"
