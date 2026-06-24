@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="BgTileDefinition" format=3 uid="uid://bxf6vr5yjl8yf"]
+
+[ext_resource type="Script" uid="uid://cmsd7aamchffq" path="res://scripts/bg_tile_definition.gd" id="1_helg8"]
+
+[resource]
+script = ExtResource("1_helg8")
+metadata/_custom_type_script = "uid://cmsd7aamchffq"

@@ -2,7 +2,7 @@ extends Node3D
 
 var grid_position: Vector2i = Vector2i.ZERO
 var cell_size: float = 2.0
-var map_node: Node            # reference to the game node that has is_walkable()
+var map_node: Node
 
 # Direction index: 0=north (-Z), 1=west (+X), 2=south (+Z), 3=east (-X)
 var direction: int = 0
