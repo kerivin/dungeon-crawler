@@ -15,6 +15,7 @@ var map_node: Node
 
 var _moving: bool = false
 var _current_axis := Vector3.ZERO
+var _input_history = []
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -24,15 +25,22 @@ func _process(delta: float) -> void:
 	_process_movement(delta)
 
 func _process_movement(delta: float) -> void:
-	var raw_move: Vector2 = Vector2.ZERO
-	if Input.is_action_pressed("move_forward"):
-		raw_move = Vector2(0, 1)
-	elif Input.is_action_pressed("move_backward"):
-		raw_move = Vector2(0, -1)
-	elif Input.is_action_pressed("move_left"):
-		raw_move = Vector2(-1, 0)
-	elif Input.is_action_pressed("move_right"):
-		raw_move = Vector2(1, 0)
+	var actions: Dictionary[StringName, Vector2] = {
+		"move_forward" :	Vector2(0, 1),
+		"move_backward" :	Vector2(0, -1),
+		"move_left" :		Vector2(-1, 0),
+		"move_right" :		Vector2(1, 0)
+	}
+	
+	for action in actions:
+		if Input.is_action_just_pressed(action):
+			_input_history.push_back(action)
+		elif Input.is_action_just_released(action):
+			_input_history.erase(action)
+	
+	var raw_move := Vector2.ZERO
+	if !_input_history.is_empty():
+		raw_move = actions[_input_history[-1]]
 	
 	if raw_move.is_zero_approx():
 		_stop_moving("raw_move.is_zero_approx(): %s" % raw_move)
