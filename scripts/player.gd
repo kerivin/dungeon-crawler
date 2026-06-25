@@ -90,7 +90,6 @@ func _get_world_direction(raw_move: Vector2) -> Vector2:
 
 func _get_axis_projection_sign(world_dir: Vector2, default_value: int = 0) -> int:
 	var proj = world_dir.x * _current_axis.x + world_dir.y * _current_axis.z
-	print(proj)
 	return sign(proj) if abs(proj) > axis_match_threshold else default_value
 
 func _get_snap_axis(world_dir: Vector2) -> Vector3:
