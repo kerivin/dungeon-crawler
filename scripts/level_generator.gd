@@ -85,6 +85,15 @@ func _get_bg_tile_def(x: int, y: int) -> BgTileDefinition:
 		return _id_to_bg_tile_def[cell_ids[x + y * map_width]]
 	return null
 
+func grid_to_world(gx: int, gy: int) -> Vector3:
+	return Vector3(gx * cell_size, 0.0, gy * cell_size)
+
+func world_to_grid(world_pos: Vector3) -> Vector2i:
+	return Vector2i(
+		floor(world_pos.x / cell_size),
+		floor(world_pos.z / cell_size)
+	)
+
 func _is_void(x: int, y: int) -> bool:
 	return _get_cell_type(x, y) == CellType.VOID
 
@@ -172,7 +181,6 @@ func _create_multimesh_for(transforms_by_texture: Dictionary, base_mesh: PlaneMe
 		mm.buffer = _pack_transforms(list)
 
 		var mi = MultiMeshInstance3D.new()
-		print("MultiMeshInstance3D transform: ", mi.transform)
 		mi.multimesh = mm
 		mi.material_override = _make_material(texture, use_alpha_scissor)
 		mi.name = "%s_%s" % [group_name, texture.resource_path.get_file() if texture.resource_path else str(texture.get_instance_id())]
@@ -207,8 +215,8 @@ func _spawn_player() -> void:
 			if is_walkable(x, y):
 				var player_scene = preload("res://scenes/player.tscn")
 				var player = player_scene.instantiate()
+				player.map_node = self
 				player.grid_position = Vector2i(x, y)
 				player.cell_size = cell_size
-				player.map_node = self
 				add_child(player)
 				return

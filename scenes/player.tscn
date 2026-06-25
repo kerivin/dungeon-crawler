@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://dyayhlxhsvtpu" path="res://scripts/camera_3d.gd" id="2_qhqgy"]
 [ext_resource type="Script" uid="uid://qeo6gl2vxuqm" path="res://scripts/sprite_overlay.gd" id="3_qlg0r"]
 [ext_resource type="Script" uid="uid://gx8v5gcrpfxi" path="res://scripts/animation_controller.gd" id="4_dqkch"]
+[ext_resource type="Script" uid="uid://n5rk6ibktswr" path="res://scripts/camera_bob_animation.gd" id="6_tuyoq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("2_g2els")
@@ -28,8 +29,21 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Resource" id="Resource_qlg0r"]
+script = ExtResource("6_tuyoq")
+interval = 10.0
+duration = 8.0
+amount = 0.02
+sway = 0.01
+metadata/_custom_type_script = "uid://n5rk6ibktswr"
+
+[sub_resource type="Resource" id="Resource_fjrip"]
+script = ExtResource("6_tuyoq")
+metadata/_custom_type_script = "uid://n5rk6ibktswr"
+
 [node name="Player" type="Node3D" unique_id=1133914630]
 script = ExtResource("1_3vyb7")
+move_threshold = 0.5
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1526682563]
 current = true
@@ -74,8 +88,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
 light_energy = 10.0
 spot_attenuation = 3.5
 
-[node name="AnimationController" type="Node" parent="." unique_id=1250162733 node_paths=PackedStringArray("player", "camera", "overlay")]
+[node name="AnimationController" type="Node" parent="." unique_id=1250162733 node_paths=PackedStringArray("camera", "overlay")]
 script = ExtResource("4_dqkch")
-player = NodePath("..")
 camera = NodePath("../Camera3D")
 overlay = NodePath("../Camera3D/SpriteOverlay")
+camera_bob_idle = SubResource("Resource_qlg0r")
+camera_bob_walking = SubResource("Resource_fjrip")
