@@ -8,7 +8,7 @@ var map_node: Node
 #@export var turn_speed: float = 180.0        # degrees per second
 @export var eye_height: float = 1.2
 @export var mouse_sensitivity: float = 0.2   # degrees per pixel
-@export var move_threshold: float = 0.3
+@export var axis_match_threshold: float = 0.3
 @export var output_moving_info: bool = false
 
 @onready var anim: Node = $AnimationController
@@ -75,6 +75,7 @@ func _process_movement(delta: float) -> void:
 		else:
 			_start_moving("from_center: %s" % from_center)
 	else:
+		_stop_moving("dir_sign: %s" % dir_sign)
 		return
 	
 	if _moving:
@@ -89,18 +90,16 @@ func _get_world_direction(raw_move: Vector2) -> Vector2:
 
 func _get_axis_projection_sign(world_dir: Vector2, default_value: int = 0) -> int:
 	var proj = world_dir.x * _current_axis.x + world_dir.y * _current_axis.z
-	return sign(proj) if abs(proj) > 0.001 else default_value
+	print(proj)
+	return sign(proj) if abs(proj) > axis_match_threshold else default_value
 
 func _get_snap_axis(world_dir: Vector2) -> Vector3:
-	if abs(world_dir.x) < move_threshold && abs(world_dir.y) < move_threshold:
-		return Vector3.ZERO
-	world_dir = world_dir.normalized()
-	var axis: Vector3 = Vector3(sign(world_dir.x), 0, 0) if abs(world_dir.x) > abs(world_dir.y) else Vector3(0, 0, sign(world_dir.y))
-	var next_cell = Vector2i(grid_position.x + int(axis.x), grid_position.y + int(axis.z))
+	var axis := Vector2i(sign(world_dir.x), 0) if abs(world_dir.x) > abs(world_dir.y) else Vector2i(0, sign(world_dir.y))
+	var next_cell = Vector2i(grid_position.x + axis.x, grid_position.y + axis.y)
 	if !map_node.is_walkable(next_cell.x, next_cell.y):
 		return Vector3.ZERO
 	
-	return axis
+	return Vector3(axis.x, 0, axis.y)
 
 func _start_moving(message: String) -> void:
 	if !_moving:

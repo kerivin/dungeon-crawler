@@ -43,8 +43,7 @@ metadata/_custom_type_script = "uid://n5rk6ibktswr"
 
 [node name="Player" type="Node3D" unique_id=1133914630]
 script = ExtResource("1_3vyb7")
-move_threshold = 0.8
-output_moving_info = true
+axis_match_threshold = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1526682563]
 current = true
