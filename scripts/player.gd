@@ -38,49 +38,51 @@ func _process_movement(delta: float) -> void:
 		elif Input.is_action_just_released(action):
 			_input_history.erase(action)
 	
-	var raw_move := Vector2.ZERO
-	if !_input_history.is_empty():
-		raw_move = actions[_input_history[-1]]
-	
-	if raw_move.is_zero_approx():
-		_stop_moving("raw_move.is_zero_approx(): %s" % raw_move)
-		return
-	
-	var world_dir: Vector2 = _get_world_direction(raw_move)
-	if world_dir.length_squared() < 0.00001:
-		_stop_moving("world_dir.length_squared() < 0.00001: %s" % world_dir)
+	if _input_history.is_empty():
+		_stop_moving("1: _input_history.is_empty()")
 		return
 	
 	var cell_center = Vector3(grid_position.x * cell_size + cell_size / 2., eye_height, grid_position.y * cell_size + cell_size / 2.)
 	var at_cell_center = global_position.distance_to(cell_center) < 0.01
-	if at_cell_center:
-		global_position = cell_center # to avoid bs
-		var snap_axis = _get_snap_axis(world_dir)
-		if !snap_axis.is_zero_approx():
-			_current_axis = snap_axis
-			_start_moving("!snap_axis.is_zero_approx(): %s" % snap_axis)
-		else:
-			_stop_moving("snap_axis.is_zero_approx(): %s" % snap_axis)
-			return
 	
-	var dir_sign = _get_axis_projection_sign(world_dir, 0)
-	if dir_sign != 0:
-		var from_center: bool = sign((_current_axis * dir_sign).dot(cell_center.direction_to(global_position))) > 0
-		if from_center:
-			var next_cell = grid_position + Vector2i(int(_current_axis.x), int(_current_axis.z)) * dir_sign
-			if map_node.is_walkable(next_cell.x, next_cell.y):
-				_start_moving("map_node.is_walkable(next_cell.x, next_cell.y): %s" % next_cell)
+	for i in _input_history.size():
+		var world_dir: Vector2 = _get_world_direction(actions[_input_history[-i - 1]])
+		if output_moving_info:
+			print("action: ", _input_history[-i - 1])
+		
+		if world_dir.length_squared() < 0.00001:
+			_stop_moving("2: world_dir.length_squared() < 0.00001: %s" % world_dir)
+			continue
+		
+		if at_cell_center:
+			global_position = cell_center # to avoid bs
+			var snap_axis = _get_snap_axis(world_dir)
+			if !snap_axis.is_zero_approx():
+				_current_axis = snap_axis
+				_start_moving("3: !snap_axis.is_zero_approx(): %s" % snap_axis)
 			else:
-				_stop_moving("!map_node.is_walkable(next_cell.x, next_cell.y): %s" % next_cell)
+				_stop_moving("3: snap_axis.is_zero_approx(): %s" % snap_axis)
+				continue
+		
+		var dir_sign = _get_axis_projection_sign(world_dir, 0)
+		if dir_sign != 0:
+			var from_center: bool = sign((_current_axis * dir_sign).dot(cell_center.direction_to(global_position))) > 0
+			if from_center:
+				var next_cell = grid_position + Vector2i(int(_current_axis.x), int(_current_axis.z)) * dir_sign
+				if map_node.is_walkable(next_cell.x, next_cell.y):
+					_start_moving("4: map_node.is_walkable(next_cell.x, next_cell.y): %s" % next_cell)
+				else:
+					_stop_moving("4: !map_node.is_walkable(next_cell.x, next_cell.y): %s" % next_cell)
+			else:
+				_start_moving("5: from_center: %s" % from_center)
 		else:
-			_start_moving("from_center: %s" % from_center)
-	else:
-		_stop_moving("dir_sign: %s" % dir_sign)
-		return
+			_stop_moving("6: dir_sign: %s" % dir_sign)
+			continue
 	
-	if _moving:
-		global_position += _current_axis * dir_sign * move_speed * delta
-		grid_position = map_node.world_to_grid(global_position)
+		if _moving:
+			global_position += _current_axis * dir_sign * move_speed * delta
+			grid_position = map_node.world_to_grid(global_position)
+			return
 
 func _get_world_direction(raw_move: Vector2) -> Vector2:
 	var forward = -global_transform.basis.z
