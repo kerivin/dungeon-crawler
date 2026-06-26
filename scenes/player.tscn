@@ -85,6 +85,7 @@ grow_vertical = 0
 
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=2121021271]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
+light_color = Color(1, 0.6862745, 0.52156866, 1)
 light_energy = 10.0
 spot_range = 6.0
 spot_attenuation = 3.5
