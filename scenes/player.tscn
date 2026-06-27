@@ -71,7 +71,11 @@ metadata/_custom_type_script = "uid://n5rk6ibktswr"
 
 [node name="Player" type="Node3D" unique_id=1133914630]
 script = ExtResource("1_3vyb7")
+move_speed = null
+eye_height = null
+mouse_sensitivity = null
 axis_match_threshold = 0.2
+output_moving_info = null
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1526682563]
 current = true
@@ -142,8 +146,8 @@ grow_vertical = 2
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=2121021271]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
 light_color = Color(1, 0.49116665, 0.29000002, 1)
-spot_range = 6.0
-spot_attenuation = -0.61
+light_energy = 5.0
+spot_range = 5.5
 spot_angle = 40.0
 
 [node name="AnimationController" type="Node" parent="." unique_id=1250162733 node_paths=PackedStringArray("camera", "overlay")]
