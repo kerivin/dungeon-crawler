@@ -26,10 +26,10 @@ func _process(delta: float) -> void:
 
 func _process_movement(delta: float) -> void:
 	var actions: Dictionary = {
-		"move_forward" :	[0, Vector2(0, 1)],
-		"move_backward" :	[1, Vector2(0, -1)],
-		"move_left" :		[2, Vector2(-1, 0)],
-		"move_right" :		[3, Vector2(1, 0)],
+		"move_forward" :	[1, Vector2(0, 1)],
+		"move_backward" :	[0, Vector2(0, -1)],
+		"move_left" :		[0, Vector2(-1, 0)],
+		"move_right" :		[0, Vector2(1, 0)],
 	}
 	
 	for action in actions:
@@ -46,7 +46,7 @@ func _process_movement(delta: float) -> void:
 	var distance_to_cell_center = global_position.distance_to(cell_center)
 	
 	_input_history.sort_custom(func(a, b):
-		return actions[a][0] > actions[b][0])
+		return actions[a][0] < actions[b][0])
 
 	for i in _input_history.size():
 		if _process_action(actions[_input_history[-i - 1]][1], delta, cell_center, distance_to_cell_center):
