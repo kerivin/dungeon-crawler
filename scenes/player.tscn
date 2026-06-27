@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://dyayhlxhsvtpu" path="res://scripts/camera_3d.gd" id="2_qhqgy"]
 [ext_resource type="Script" uid="uid://qeo6gl2vxuqm" path="res://scripts/sprite_overlay.gd" id="3_qlg0r"]
 [ext_resource type="Script" uid="uid://gx8v5gcrpfxi" path="res://scripts/animation_controller.gd" id="4_dqkch"]
+[ext_resource type="Shader" uid="uid://5oqg4ot354qu" path="res://shaders/dithering.gdshader" id="5_fjrip"]
+[ext_resource type="Texture2D" uid="uid://cjnop0g8u31nj" path="res://textures/BlueNoise470.png" id="6_smehm"]
 [ext_resource type="Script" uid="uid://n5rk6ibktswr" path="res://scripts/camera_bob_animation.gd" id="6_tuyoq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
@@ -29,6 +31,32 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4v7s"]
+shader = ExtResource("5_fjrip")
+shader_parameter/blue_noise_texture = ExtResource("6_smehm")
+shader_parameter/darkness_threshold = 0.0
+shader_parameter/transition_width = 0.0
+shader_parameter/spacing = 0.0
+shader_parameter/dot_color = Color(1, 0, 0, 1)
+shader_parameter/use_scene_dots = false
+shader_parameter/bg_color = Color(1, 0, 0.016666412, 1)
+shader_parameter/use_scene_background = true
+shader_parameter/filter_opacity = 0.250000011875
+shader_parameter/blend_mode = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yf5fn"]
+shader = ExtResource("5_fjrip")
+shader_parameter/blue_noise_texture = ExtResource("6_smehm")
+shader_parameter/darkness_threshold = 0.1750000083125
+shader_parameter/transition_width = 0.0
+shader_parameter/spacing = 0.0
+shader_parameter/dot_color = Color(0, 0, 0, 1)
+shader_parameter/use_scene_dots = true
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/use_scene_background = false
+shader_parameter/filter_opacity = 1.0
+shader_parameter/blend_mode = 0
+
 [sub_resource type="Resource" id="Resource_qlg0r"]
 script = ExtResource("6_tuyoq")
 interval = 10.0
@@ -51,6 +79,7 @@ fov = 60.0
 script = ExtResource("2_qhqgy")
 
 [node name="SpriteOverlay" type="CanvasLayer" parent="Camera3D" unique_id=1228645838]
+layer = 100
 script = ExtResource("3_qlg0r")
 
 [node name="HandsAnchor" type="Control" parent="Camera3D/SpriteOverlay" unique_id=393110733]
@@ -83,12 +112,39 @@ grow_vertical = 0
 
 [node name="Head" type="AnimatedSprite2D" parent="Camera3D/SpriteOverlay/HeadAnchor" unique_id=1633356000]
 
+[node name="CameraFilter" type="CanvasLayer" parent="Camera3D" unique_id=358149056]
+layer = 0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D/CameraFilter" unique_id=239893084]
+
+[node name="ColorRect" type="ColorRect" parent="Camera3D/CameraFilter/CanvasLayer" unique_id=1789445096]
+material = SubResource("ShaderMaterial_g4v7s")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="Camera3D/CameraFilter" unique_id=635845604]
+layer = 2
+
+[node name="ColorRect2" type="ColorRect" parent="Camera3D/CameraFilter/CanvasLayer2" unique_id=1583710636]
+material = SubResource("ShaderMaterial_yf5fn")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D" unique_id=269858427]
+
 [node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=2121021271]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
-light_color = Color(1, 0.6862745, 0.52156866, 1)
-light_energy = 10.0
+light_color = Color(1, 0.49116665, 0.29000002, 1)
 spot_range = 6.0
-spot_attenuation = 3.5
+spot_attenuation = -0.61
+spot_angle = 40.0
 
 [node name="AnimationController" type="Node" parent="." unique_id=1250162733 node_paths=PackedStringArray("camera", "overlay")]
 script = ExtResource("4_dqkch")
